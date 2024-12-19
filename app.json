@@ -1,4 +1,7 @@
 {
   "name": "MathQuest",
-  "displayName": "MathQuest"
+  "displayName": "MathQuest",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-2627956667785383~1861485465"
+  }
 }

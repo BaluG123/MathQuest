@@ -60,7 +60,7 @@
         "level": 8,
         "question": "If 3x = 24, what is x?",
         "options": ["6", "8", "7", "9"],
-        "correctAnswer": 2,
+        "correctAnswer": 1,
         "hint": "Divide both sides by 3",
         "solution": "3x = 24, so x = 24 ÷ 3 = 8"
       },
@@ -167,6 +167,238 @@
         "correctAnswer": 0,
         "hint": "Think of special angles in the first quadrant",
         "solution": "sin(30°) = 0.5, so θ = 30°"
+      },
+      {
+        "level": 22,
+        "question": "If a square's area increases by 44%, what is the percentage increase in its side length?",
+        "options": ["20%", "22%", "40%", "44%"],
+        "correctAnswer": 0,
+        "hint": "If area = side², think about square root of 1.44",
+        "solution": "New area = 1.44 × old area. If side₁² × 1.44 = side₂², then side₂/side₁ = √1.44 = 1.20, meaning a 20% increase"
+      },
+      {
+        "level": 23,
+        "question": "How many different ways can you arrange the letters in 'MATH'?",
+        "options": ["12", "24", "16", "8"],
+        "correctAnswer": 0,
+        "hint": "This is a permutation of 4 distinct letters",
+        "solution": "4! = 4 × 3 × 2 × 1 = 24 different arrangements"
+      },
+      {
+        "level": 24,
+        "question": "If cos(x) = 0.8, what is sin²(x)?",
+        "options": ["0.36", "0.64", "0.8", "0.6"],
+        "correctAnswer": 0,
+        "hint": "Use the Pythagorean identity: sin²(x) + cos²(x) = 1",
+        "solution": "cos²(x) = 0.64, so sin²(x) = 1 - 0.64 = 0.36"
+      },
+      {
+        "level": 25,
+        "question": "A phone's price is reduced by 20%, then increased by 25%. What is the overall percentage change?",
+        "options": ["0%", "-5%", "+5%", "-10%"],
+        "correctAnswer": 0,
+        "hint": "Calculate step by step: 100 → 80 → ?",
+        "solution": "After reduction: 100 × 0.8 = 80, After increase: 80 × 1.25 = 100, So no change overall"
+      },
+      {
+        "level": 26,
+        "question": "What is the sum of the first 10 even numbers?",
+        "options": ["110", "90", "100", "120"],
+        "correctAnswer": 0,
+        "hint": "List the first 10 even numbers and use the arithmetic sequence formula",
+        "solution": "Even numbers: 2,4,6,8,10,12,14,16,18,20. Sum = 10(2+20)/2 = 110"
+      },
+      {
+        "level": 27,
+        "question": "If 3 cats catch 3 mice in 3 minutes, how many cats are needed to catch 100 mice in 100 minutes?",
+        "options": ["3", "33", "100", "9"],
+        "correctAnswer": 0,
+        "hint": "Set up a proportion considering both time and cats",
+        "solution": "3 cats → 3 mice → 3 min; Rate is constant, so 3 cats will catch 100 mice in 100 min"
+      },
+      {
+        "level": 28,
+        "question": "What is the units digit of 7⁹⁹?",
+        "options": ["3", "7", "9", "1"],
+        "correctAnswer": 0,
+        "hint": "Look for pattern in units digit: 7¹,7²,7³,7⁴",
+        "solution": "Pattern: 7,9,3,1 repeats. 99÷4 has remainder 3, so units digit is 3"
+      },
+      {
+        "level": 29,
+        "question": "In how many ways can you select 3 different fruits from 7 fruits?",
+        "options": ["35", "21", "42", "28"],
+        "correctAnswer": 0,
+        "hint": "This is a combination problem: C(7,3)",
+        "solution": "C(7,3) = 7!/(3!(7-3)!) = 7!/(3!4!) = 35"
+      },
+      {
+        "level": 30,
+        "question": "What is the probability of rolling a sum of 7 with two dice?",
+        "options": ["1/6", "5/36", "7/36", "1/8"],
+        "correctAnswer": 0,
+        "hint": "List all possible combinations that sum to 7",
+        "solution": "Favorable outcomes: (1,6),(2,5),(3,4),(4,3),(5,2),(6,1). Total outcomes: 36. Probability = 6/36 = 1/6"
+      },
+      {
+        "level": 31,
+        "question": "Solve: log₂(x) + log₂(x+3) = 4",
+        "options": ["5", "4", "3", "6"],
+        "correctAnswer": 0,
+        "hint": "Use log property: log₂(x(x+3)) = 4",
+        "solution": "2⁴ = x(x+3), 16 = x² + 3x, x² + 3x - 16 = 0, x = 5 (reject -8)"
+      },
+      {
+        "level": 32,
+        "question": "If f(x) = x² + 2x and g(x) = x + 1, find f(g(2))",
+        "options": ["15", "12", "16", "14"],
+        "correctAnswer": 0,
+        "hint": "First find g(2), then put that result into f(x)",
+        "solution": "g(2) = 3, then f(3) = 9 + 6 = 15"
+      },
+      {
+        "level": 33,
+        "question": "What is the area between y = x² and y = x in the first quadrant?",
+        "options": ["1/6", "1/3", "1/2", "1/4"],
+        "correctAnswer": 0,
+        "hint": "Find intersection points and integrate the difference",
+        "solution": "Intersect at x=0,1. Area = ∫(x-x²)dx from 0 to 1 = [x²/2 - x³/3] = 1/6"
+      },
+      {
+        "level": 34,
+        "question": "If a² + b² = 25 and ab = 12, what is |a - b|?",
+        "options": ["1", "2", "3", "4"],
+        "correctAnswer": 0,
+        "hint": "Use (a-b)² = a² + b² - 2ab",
+        "solution": "(a-b)² = 25 - 2(12) = 1, so |a-b| = 1"
+      },
+      {
+        "level": 35,
+        "question": "What is the smallest positive number that leaves remainder 2 when divided by 3, 4, and 5?",
+        "options": ["62", "60", "58", "56"],
+        "correctAnswer": 0,
+        "hint": "Use Chinese Remainder Theorem or systematic checking",
+        "solution": "Number = 62 (verify: 62÷3=20r2, 62÷4=15r2, 62÷5=12r2)"
+      },
+      {
+        "level": 36,
+        "question": "In triangle ABC, if sin(A) = 3/5 and cos(B) = 12/13, what is tan(C)?",
+        "options": ["4/3", "3/4", "5/4", "4/5"],
+        "correctAnswer": 0,
+        "hint": "Use sin²(C) + cos²(C) = 1 and sum of angles = 180°",
+        "solution": "Find C using sin(C) = 4/5, cos(C) = 3/5, therefore tan(C) = 4/3"
+      },
+      {
+        "level": 37,
+        "question": "How many integers between 1 and 1000 are perfect squares?",
+        "options": ["31", "32", "30", "33"],
+        "correctAnswer": 0,
+        "hint": "Find largest n where n² ≤ 1000",
+        "solution": "√1000 ≈ 31.6, so largest square is 31². Count from 1² to 31² = 31 numbers"
+      },
+      {
+        "level": 38,
+        "question": "If x + 1/x = 3, what is x² + 1/x²?",
+        "options": ["7", "8", "9", "6"],
+        "correctAnswer": 0,
+        "hint": "Square (x + 1/x) = 3 and rearrange",
+        "solution": "(x + 1/x)² = 9, x² + 2 + 1/x² = 9, so x² + 1/x² = 7"
+      },
+      {
+        "level": 39,
+        "question": "What is the sum of the geometric sequence: 1, √2, 2, 2√2, 4?",
+        "options": ["7+3√2", "8+2√2", "6+4√2", "5+5√2"],
+        "correctAnswer": 0,
+        "hint": "Identify the common ratio (√2) and sum terms",
+        "solution": "1 + √2 + 2 + 2√2 + 4 = (1 + 2 + 4) + (√2 + 2√2) = 7 + 3√2"
+      },
+      {
+        "level": 40,
+        "question": "What is the determinant of matrix [[2,3],[4,5]]?",
+        "options": ["-2", "-1", "0", "1"],
+        "correctAnswer": 0,
+        "hint": "Use formula: ad-bc for 2×2 matrix",
+        "solution": "det = 2(5) - 3(4) = 10 - 12 = -2"
+      },
+      {
+        "level": 41,
+        "question": "If f'(x) = 6x-2 and f(0)=5, what is f(2)?",
+        "options": ["13", "11", "15", "17"],
+        "correctAnswer": 0,
+        "hint": "Integrate f'(x) and use initial condition",
+        "solution": "f(x) = 3x² - 2x + C, f(0)=5 so C=5, f(2)=12-4+5=13"
+      },
+      {
+        "level": 42,
+        "question": "What is the sum of coefficients in (x+1)⁵?",
+        "options": ["32", "16", "64", "25"],
+        "correctAnswer": 0,
+        "hint": "Put x=1 in expansion",
+        "solution": "(1+1)⁵ = 2⁵ = 32 gives sum of coefficients"
+      },
+      {
+        "level": 43,
+        "question": "How many different triangles can be formed with sides of integer length and perimeter 12?",
+        "options": ["7", "8", "6", "9"],
+        "correctAnswer": 0,
+        "hint": "List possibilities satisfying triangle inequality",
+        "solution": "Possible combinations: (3,4,5),(2,5,5),(3,3,6),(4,4,4) and symmetrical cases = 7"
+      },
+      {
+        "level": 44,
+        "question": "What is the probability that two randomly chosen positive factors of 36 are coprime?",
+        "options": ["5/12", "1/2", "7/12", "2/3"],
+        "correctAnswer": 0,
+        "hint": "List factors of 36 and check each pair",
+        "solution": "Factors: 1,2,3,4,6,9,12,36. 10 coprime pairs out of 24 total pairs = 5/12"
+      },
+      {
+        "level": 45,
+        "question": "What is the smallest positive integer n where n! is divisible by 100?",
+        "options": ["8", "7", "9", "10"],
+        "correctAnswer": 0,
+        "hint": "Need two 2s and two 5s as factors",
+        "solution": "8! = 40320 is first factorial divisible by 100 (has factors 2⁷ × 3⁴ × 5 × 7)"
+      },
+      {
+        "level": 46,
+        "question": "In how many ways can 15 be expressed as sum of consecutive positive integers?",
+        "options": ["4", "3", "5", "2"],
+        "correctAnswer": 0,
+        "hint": "Try different starting numbers and lengths",
+        "solution": "15=15, 7+8, 4+5+6, 1+2+3+4+5 (4 ways)"
+      },
+      {
+        "level": 47,
+        "question": "What is the area of region satisfying |x| + |y| ≤ 2?",
+        "options": ["8", "6", "10", "4"],
+        "correctAnswer": 0,
+        "hint": "This forms a rhombus in xy-plane",
+        "solution": "Forms rhombus with vertices at (±2,0) and (0,±2). Area = 4×2 = 8"
+      },
+      {
+        "level": 48,
+        "question": "If x,y,z are positive reals and xyz=1, what is minimum value of x+y+z?",
+        "options": ["3", "1", "2", "0"],
+        "correctAnswer": 0,
+        "hint": "Use AM-GM inequality",
+        "solution": "By AM-GM, (x+y+z)/3 ≥ ∛(xyz) = 1, so x+y+z ≥ 3, equality at x=y=z=1"
+      },
+      {
+        "level": 49,
+        "question": "What is the sum of all two-digit numbers divisible by 7?",
+        "options": ["637", "644", "630", "651"],
+        "correctAnswer": 0,
+        "hint": "List numbers: 14,21,28,...,98",
+        "solution": "Numbers are 14,21,28,35,42,49,56,63,70,77,84,91,98. Sum = 637"
+      },
+      {
+        "level": 50,
+        "question": "If f(x+y) = f(x)f(y) for all x,y and f(1)=2, what is f(3)?",
+        "options": ["8", "6", "9", "12"],
+        "correctAnswer": 0,
+        "hint": "This is exponential function: f(x)=2ˣ",
+        "solution": "Property implies f(x)=2ˣ, so f(3)=2³=8"
       }
     ]
   }

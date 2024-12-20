@@ -1,71 +1,130 @@
-import React from 'react';
-import {View, StyleSheet, Dimensions, Text} from 'react-native';
+import React, {useCallback, useMemo} from 'react';
+import {View, StyleSheet, Dimensions, Text, Platform} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  withTiming,
+  withRepeat,
   withSequence,
+  Easing,
   runOnJS,
 } from 'react-native-reanimated';
-import LottieView from 'lottie-react-native';
 import {useNavigation} from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {BlurView} from '@react-native-community/blur';
 
-const {width, height} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const scale = useSharedValue(1);
-  const lottieRef = React.useRef(null);
+  const backgroundOpacity = useSharedValue(0);
+  const contentOpacity = useSharedValue(0);
+  const contentTranslateY = useSharedValue(-20);
 
-  const handlePress = () => {
-    // Animate the scale
-    scale.value = withSequence(
-      withSpring(0.9, {damping: 2}),
-      withSpring(1.1, {damping: 2}),
-      withSpring(1, {damping: 2}),
+  // Pre-calculate values for better performance
+  const buttonSize = useMemo(() => width * 0.25, []);
+  const buttonRadius = useMemo(() => buttonSize / 2, [buttonSize]);
+
+  // Memoize navigation function
+  const navigateToLevel = useCallback(() => {
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'LevelScreen'}],
+    });
+  }, [navigation]);
+
+  // Start animations on mount
+  React.useEffect(() => {
+    // Background animation
+    backgroundOpacity.value = withRepeat(
+      withSequence(
+        withTiming(1, {
+          duration: 1000,
+          easing: Easing.inOut(Easing.ease),
+        }),
+        withTiming(0, {
+          duration: 1000,
+          easing: Easing.inOut(Easing.ease),
+        }),
+      ),
+      -1,
+      true,
     );
 
-    // Play the Lottie animation
-    lottieRef.current?.play();
+    // Content fade in and slide up
+    contentOpacity.value = withTiming(1, {
+      duration: 1000,
+      easing: Easing.inOut(Easing.ease),
+    });
+    contentTranslateY.value = withSpring(0, {
+      damping: 15,
+      stiffness: 100,
+    });
+  }, []);
 
-    // Navigate after animation
-    setTimeout(() => {
-      navigation.navigate('LevelScreen');
-    }, 300);
-  };
+  // Optimized press handler with faster animations
+  const handlePress = useCallback(() => {
+    scale.value = withTiming(
+      0.95,
+      {
+        duration: 100,
+        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+      },
+      () => {
+        scale.value = withTiming(
+          1,
+          {
+            duration: 100,
+            easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+          },
+          () => {
+            runOnJS(navigateToLevel)();
+          },
+        );
+      },
+    );
+  }, [scale, navigateToLevel]);
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{scale: scale.value}],
-    };
-  });
+  // Animated styles
+  const animatedButtonStyle = useAnimatedStyle(() => ({
+    transform: [{scale: scale.value}],
+  }));
+
+  const animatedBackgroundStyle = useAnimatedStyle(() => ({
+    backgroundColor: backgroundOpacity.value === 0 ? '#0F172A' : '#1E293B',
+  }));
+
+  const animatedContentStyle = useAnimatedStyle(() => ({
+    opacity: contentOpacity.value,
+    transform: [{translateY: contentTranslateY.value}],
+  }));
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={['#4158D0', '#C850C0', '#FFCC70']}
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 1}}
-        style={styles.background}
-      />
-      <View style={styles.content}>
+      <Animated.View style={[styles.background, animatedBackgroundStyle]} />
+
+      <Animated.View style={[styles.content, animatedContentStyle]}>
         <Text style={styles.title}>Math Quest</Text>
-        <Text style={styles.subtitle}>Begin Your Adventure!</Text>
-        <Animated.View style={[styles.buttonContainer, animatedStyle]}>
-          <TouchableOpacity onPress={handlePress} style={styles.button}>
-            <LottieView
-              ref={lottieRef}
-              source={require('../utils/Play.json')}
-              style={styles.lottie}
-              autoPlay={false}
-              loop={false}
-            />
+        <Text style={styles.subtitle}>Master Mathematics</Text>
+
+        <Animated.View style={[styles.buttonContainer, animatedButtonStyle]}>
+          <TouchableOpacity
+            onPress={handlePress}
+            activeOpacity={0.8}
+            style={[styles.button, {width: buttonSize, height: buttonSize}]}>
+            {Platform.OS === 'ios' && (
+              <BlurView
+                style={StyleSheet.absoluteFill}
+                blurType="light"
+                blurAmount={20}
+              />
+            )}
             <Text style={styles.buttonText}>PLAY</Text>
           </TouchableOpacity>
         </Animated.View>
-      </View>
+      </Animated.View>
     </View>
   );
 };
@@ -73,231 +132,61 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   background: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
   },
   content: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
   title: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 10,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: {width: 2, height: 2},
-    textShadowRadius: 5,
+    fontSize: 42,
+    fontWeight: '800',
+    color: '#F8FAFC',
+    marginBottom: 8,
+    fontFamily: Platform.select({
+      ios: 'SF Pro Display',
+      android: 'sans-serif-medium',
+    }),
   },
   subtitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '600',
-    color: '#FFFFFF',
-    marginBottom: 40,
-    opacity: 0.9,
+    color: '#94A3B8',
+    marginBottom: 48,
+    fontFamily: Platform.select({ios: 'SF Pro Text', android: 'sans-serif'}),
   },
   buttonContainer: {
-    width: width * 0.3,
-    height: width * 0.3,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    borderRadius: width * 0.15,
-    elevation: 5,
+    borderRadius: 999,
+    overflow: 'hidden',
+    backgroundColor: Platform.select({
+      ios: 'rgba(255, 255, 255, 0.1)',
+      android: 'rgba(255, 255, 255, 0.15)',
+    }),
+    elevation: Platform.select({android: 4, default: 0}),
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   button: {
-    width: '100%',
-    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 999,
   },
   buttonText: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '700',
     color: '#FFFFFF',
-    position: 'absolute',
-  },
-  lottie: {
-    width: '100%',
-    height: '100%',
+    letterSpacing: 1,
+    fontFamily: Platform.select({
+      ios: 'SF Pro Display',
+      android: 'sans-serif-medium',
+    }),
   },
 });
 
-export default HomeScreen;
-
-// import React, {useCallback, useMemo} from 'react';
-// import {View, StyleSheet, Dimensions, Text} from 'react-native';
-// import Animated, {
-//   useAnimatedStyle,
-//   useSharedValue,
-//   withSpring,
-//   withSequence,
-//   runOnJS,
-// } from 'react-native-reanimated';
-// import LottieView from 'lottie-react-native';
-// import {useNavigation} from '@react-navigation/native';
-// import LinearGradient from 'react-native-linear-gradient';
-// import {TouchableOpacity} from 'react-native-gesture-handler';
-
-// const {width} = Dimensions.get('window');
-
-// const HomeScreen = () => {
-//   const navigation = useNavigation();
-//   const scale = useSharedValue(1);
-//   const lottieRef = React.useRef(null);
-
-//   // Memoize the gradient colors to prevent unnecessary re-renders
-//   const gradientColors = useMemo(() => ['#4158D0', '#C850C0', '#FFCC70'], []);
-
-//   // Navigation function wrapped in useCallback
-//   const navigateToLevel = useCallback(() => {
-//     navigation.navigate('LevelScreen');
-//   }, [navigation]);
-
-//   const handlePress = useCallback(() => {
-//     // Combine animations with runOnJS for better performance
-//     scale.value = withSequence(
-//       withSpring(0.9, {damping: 2}),
-//       withSpring(1.1, {damping: 2}),
-//       withSpring(1, {
-//         damping: 2,
-//         callback: finished => {
-//           if (finished) {
-//             // Play Lottie animation
-//             lottieRef.current?.play();
-//             // Use shorter timeout
-//             setTimeout(navigateToLevel, 800);
-//           }
-//         },
-//       }),
-//     );
-//   }, [scale, navigateToLevel]);
-
-//   // Memoize animated style
-//   const animatedStyle = useAnimatedStyle(() => ({
-//     transform: [{scale: scale.value}],
-//   }));
-
-//   // Memoize the button component
-//   const ButtonComponent = useMemo(
-//     () => (
-//       <Animated.View style={[styles.buttonContainer, animatedStyle]}>
-//         <TouchableOpacity onPress={handlePress} style={styles.button}>
-//           <LottieView
-//             ref={lottieRef}
-//             source={require('../utils/Play.json')}
-//             style={styles.lottie}
-//             autoPlay={false}
-//             loop={false}
-//             speed={1.5} // Increase animation speed
-//             cacheStrategy="strong" // Add caching
-//           />
-//           <Text style={styles.buttonText}>PLAY</Text>
-//         </TouchableOpacity>
-//       </Animated.View>
-//     ),
-//     [handlePress, animatedStyle],
-//   );
-
-//   return (
-//     <View style={styles.container}>
-//       <LinearGradient
-//         colors={gradientColors}
-//         start={{x: 0, y: 0}}
-//         end={{x: 1, y: 1}}
-//         style={styles.background}
-//       />
-//       <View style={styles.content}>
-//         <Text style={styles.title}>Math Quest</Text>
-//         <Text style={styles.subtitle}>Begin Your Adventure!</Text>
-//         {ButtonComponent}
-//       </View>
-//     </View>
-//   );
-// };
-
-// // Move styles outside component to prevent recreation
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   background: {
-//     position: 'absolute',
-//     left: 0,
-//     right: 0,
-//     top: 0,
-//     bottom: 0,
-//   },
-//   content: {
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     padding: 20,
-//   },
-//   title: {
-//     fontSize: 48,
-//     fontWeight: 'bold',
-//     color: '#FFFFFF',
-//     marginBottom: 10,
-//     textShadowColor: 'rgba(0, 0, 0, 0.3)',
-//     textShadowOffset: {width: 2, height: 2},
-//     textShadowRadius: 5,
-//   },
-//   subtitle: {
-//     fontSize: 24,
-//     fontWeight: '600',
-//     color: '#FFFFFF',
-//     marginBottom: 40,
-//     opacity: 0.9,
-//   },
-//   buttonContainer: {
-//     width: width * 0.3,
-//     height: width * 0.3,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: 'rgba(255, 255, 255, 0.15)',
-//     borderRadius: width * 0.15,
-//     elevation: 5,
-//     shadowColor: '#000',
-//     shadowOffset: {
-//       width: 0,
-//       height: 4,
-//     },
-//     shadowOpacity: 0.3,
-//     shadowRadius: 4.65,
-//   },
-//   button: {
-//     width: '100%',
-//     height: '100%',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   buttonText: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//     color: '#FFFFFF',
-//     position: 'absolute',
-//   },
-//   lottie: {
-//     width: '100%',
-//     height: '100%',
-//   },
-// });
-
-// export default React.memo(HomeScreen);
+export default React.memo(HomeScreen);
